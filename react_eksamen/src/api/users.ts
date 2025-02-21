@@ -85,9 +85,6 @@ export const getUserById = async (id: string): Promise<User> => {
   export const deleteUser = async (id: string): Promise<{ message: string }> => {
     const response = await fetch(`${BASE_URL}/users/${id}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
   
     if (!response.ok) {
@@ -95,7 +92,10 @@ export const getUserById = async (id: string): Promise<User> => {
       throw new Error(`Failed to delete user: ${errorText}`);
     }
   
-    return await response.json();
+    try {
+      const data = await response.json();
+      return data;
+    } catch {
+      return { message: "User deleted successfully." };
+    }
   };
-
-
