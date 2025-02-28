@@ -1,0 +1,75 @@
+.navbar {
+  height: 5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: #dfdfdf;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar__logo img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85%;
+    padding-left: 1.5rem;
+  }
+  
+  .navbar__menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  .navbar__menu li {
+    height: 100%;
+    width: 4vw;
+  }
+  
+  .navbar__menu li a {
+    display: inline-flex;
+    align-items: center;
+    padding-right: 0 0 0.75rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    height: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+.navbar__menu li button {
+  display: inline-flex;
+  align-items: center;
+  padding-right: 0 0 0.75rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: rgb(255, 73, 73);
+}
+
+.navbar__menu li a:hover {
+  background-color: #c1c1c1;
+  color: #fff;
+  border-color: #ffffff;
+}
+
+
+.navbar__menu li button:hover {
+  background-color: #c1c1c1;
+  color: #ff0000;
+  border-color: #ffffff;
+}

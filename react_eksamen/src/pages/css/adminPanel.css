@@ -1,0 +1,241 @@
+.get-users-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.users-header {
+  width: 90vw;
+  display: flex;
+  font-weight: bold;
+  padding: 8px 0;
+  border-bottom: 2px solid #ccc;
+}
+
+.users-header span {
+  flex: 1;
+}
+
+.users-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-item .user-id {
+  flex: 1;
+}
+
+.user-item .user-name {
+  flex: 1;
+}
+
+.user-item .user-email {
+  flex: 1;
+}
+
+.user-item .user-role {
+  flex: 1;
+}
+
+.user-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button,
+.delete-button {
+  width: 3vw;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.edit-button {
+  background-color: rgb(17, 120, 17);
+}
+
+.edit-button:hover {
+  background-color: #437646;
+}
+
+.delete-button {
+  background-color: red;
+}
+
+.delete-button:hover {
+  background-color: #a60000;
+}
+
+.main-container {
+  max-width: 100vw;
+  margin: 0 auto;
+  padding: 20px;
+  max-height: 80vh; 
+  overflow-y: auto; 
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.admin-booking-form,
+.admin-bookings {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.admin-booking-form h3,
+.admin-bookings h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.admin-booking-form select,
+.admin-booking-form input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.admin-booking-form .med-players input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.admin-booking-form button,
+.admin-bookings button {
+  padding: 8px 16px;
+  background-color: #4167f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.admin-booking-form button:disabled,
+.admin-bookings button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+}
+
+.booking-item {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bookings-flex {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 20px; 
+  margin-top: 15px;
+}
+
+.booking-card {
+  flex: 1 1 300px; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.edit-user-modal,
+.edit-booking-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-width: 500px;
+  width: 90%;
+}
+
+.modal-content {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.modal-content div {
+  margin-bottom: 15px;
+}
+
+.modal-content label {
+  margin-bottom: 5px;
+}
+
+.modal-content select,
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  background-color: #4167f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-actions button:last-child {
+  background-color: #959595;
+}

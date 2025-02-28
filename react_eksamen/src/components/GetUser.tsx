@@ -47,7 +47,7 @@ const GetUser = () => {
           <h3>User Details</h3>
           <p>ID: {user._id}</p>
           <p>Name: {user.name}</p>
-          <p>User Type: {user.usertype}</p>
+          <p>User Type: {user.role}</p>
         </div>
       )}
     </div>
