@@ -9,15 +9,14 @@ export const createBooking = async (
 ): Promise<Booking> => {
   console.log("Creating booking with data:", bookingData);
 
-  // Hent alle eksisterende bookinger for å sjekke kollisjoner
-  const allBookings = await getBookings(null); // Hent alle bookinger (ikke filtrert på bruker ennå)
+  const allBookings = await getBookings(null);
 
-  // Sjekk om den foreslåtte booking-tiden kolliderer med eksisterende bookinger
+  
   const collision = allBookings.find((booking) => {
     return (
-      booking.court === bookingData.court && // Samme bane
-      booking.date === bookingData.date && // Samme dato
-      booking.time === bookingData.time // Samme tid
+      booking.court === bookingData.court && 
+      booking.date === bookingData.date && 
+      booking.time === bookingData.time 
     );
   });
 
@@ -71,7 +70,7 @@ export const getBookings = async (user: User | null): Promise<Booking[]> => {
   if (user?.role === "user") {
     return bookings.filter((booking: Booking) => booking.player === user._id);
   }
-  return bookings; // For admin, returner alle bookinger
+  return bookings;
 };
 
 // Henter en spesifikk booking med GET
