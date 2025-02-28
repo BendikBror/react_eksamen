@@ -4,8 +4,29 @@ import { User } from "../types/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // Oppretter en ny booking med POST
+export const createBooking = async (
+  bookingData: NewBooking
+): Promise<Booking> => {
+  console.log("Creating booking with data:", bookingData);
 
-export const createBooking = async (bookingData: NewBooking): Promise<Booking> => {
+  // Hent alle eksisterende bookinger for å sjekke kollisjoner
+  const allBookings = await getBookings(null); // Hent alle bookinger (ikke filtrert på bruker ennå)
+
+  // Sjekk om den foreslåtte booking-tiden kolliderer med eksisterende bookinger
+  const collision = allBookings.find((booking) => {
+    return (
+      booking.court === bookingData.court && // Samme bane
+      booking.date === bookingData.date && // Samme dato
+      booking.time === bookingData.time // Samme tid
+    );
+  });
+
+  if (collision) {
+    throw new Error(
+      "Denne tiden og banen er allerede booket. Velg en annen tid eller bane."
+    );
+  }
+
   const response = await fetch(`${BASE_URL}/bookings`, {
     method: "POST",
     headers: {
@@ -16,14 +37,19 @@ export const createBooking = async (bookingData: NewBooking): Promise<Booking> =
 
   if (!response.ok) {
     const errorText = await response.text();
+    console.error("Error response:", errorText);
     throw new Error(`Failed to create booking: ${errorText}`);
   }
 
-  return await response.json();
+  const booking = await response.json();
+  console.log("Created booking:", booking);
+  return booking;
 };
 
 // Henter alle bookinger med GET, filtrert basert på brukerrolle
 export const getBookings = async (user: User | null): Promise<Booking[]> => {
+  console.log("Fetching bookings for user:", user);
+  console.log("Fetching bookings from:", `${BASE_URL}/bookings`);
   const response = await fetch(`${BASE_URL}/bookings`, {
     method: "GET",
     headers: {
@@ -31,20 +57,24 @@ export const getBookings = async (user: User | null): Promise<Booking[]> => {
     },
   });
 
+  console.log("Response status:", response.status);
+  console.log("Response headers:", response.headers);
+
   if (!response.ok) {
     const errorText = await response.text();
+    console.error("Error response:", errorText);
     throw new Error(`Failed to fetch bookings: ${errorText}`);
   }
 
   const bookings = await response.json();
+  console.log("Fetched bookings data:", bookings);
   if (user?.role === "user") {
     return bookings.filter((booking: Booking) => booking.player === user._id);
   }
-  return bookings;
+  return bookings; // For admin, returner alle bookinger
 };
 
 // Henter en spesifikk booking med GET
-
 export const getBookingById = async (id: string): Promise<Booking> => {
   const response = await fetch(`${BASE_URL}/bookings/${id}`, {
     method: "GET",
@@ -62,7 +92,6 @@ export const getBookingById = async (id: string): Promise<Booking> => {
 };
 
 // Oppdaterer en booking med PUT
-
 export const updateBooking = async (
   id: string,
   bookingData: UpdateBooking
@@ -76,8 +105,8 @@ export const updateBooking = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      ...existingBooking, 
-      ...bookingData,     
+      ...existingBooking,
+      ...bookingData,
     }),
   });
 
@@ -90,9 +119,8 @@ export const updateBooking = async (
     throw new Error(`Failed to update booking: ${errorText}`);
   }
 
-  // Prøv å parse JSON hvis responsen har en kropp, ellers returner den eksisterende bookingen
   let updatedBooking: Booking = existingBooking;
-  if (response.status !== 204) { 
+  if (response.status !== 204) {
     try {
       updatedBooking = await response.json();
     } catch (e) {
@@ -105,7 +133,6 @@ export const updateBooking = async (
 };
 
 // Sletter en booking basert på ID med DELETE
-
 export const deleteBooking = async (id: string): Promise<void> => {
   const response = await fetch(`${BASE_URL}/bookings/${id}`, {
     method: "DELETE",
@@ -118,6 +145,4 @@ export const deleteBooking = async (id: string): Promise<void> => {
     const errorText = await response.text();
     throw new Error(`Failed to delete booking: ${errorText}`);
   }
-
-  
 };

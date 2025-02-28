@@ -239,3 +239,7 @@ h2 {
 .modal-actions button:last-child {
   background-color: #959595;
 }
+
+.booking-page{
+  width: 100vw;
+}

@@ -1,9 +1,9 @@
 import AddUser from "../components/RegisterUser";
 import GetUser from "../components/GetUser";
 import GetUsers from "../components/GetUsers";
-import AddBooking from "../components/AddBooking";
 import GetBookings from "../components/GetBookings";
 import "./css/adminPanel.css";
+import Booking from "./booking";
 
 const AdminPanel = () => {
   return (
@@ -15,7 +15,7 @@ const AdminPanel = () => {
         <GetUsers />
         <GetUser />
         <h2>Bookingadministrasjon</h2>
-        <AddBooking />
+        <Booking />
         <GetBookings />
       </div>
     </>

@@ -18,15 +18,14 @@ const MinSide = () => {
     medPlayers: [],
   });
 
-  // Hent brukerens bookinger når siden lastes eller user endres
   useEffect(() => {
-    console.log("User in MinSide:", user); // Debug logging
+    console.log("User in MinSide:", user);
     if (!user) return;
     const fetchBookings = async () => {
       try {
         setLoading(true);
         const data = await getBookings(user);
-        console.log("Fetched bookings:", data); // Debug logging
+        console.log("Fetched bookings:", data);
         setBookings(data);
       } catch (err) {
         setError("Kunne ikke hente bookinger.");
@@ -39,14 +38,17 @@ const MinSide = () => {
   }, [user]);
 
   const handleDelete = async (bookingId: string) => {
-    if (!window.confirm("Er du sikker på at du vil slette denne bookingen?")) return;
+    if (!window.confirm("Er du sikker på at du vil slette denne bookingen?"))
+      return;
     try {
       setLoading(true);
       await deleteBooking(bookingId);
       setBookings(bookings.filter((b) => b._id !== bookingId));
       setError(null);
     } catch (err: unknown) {
-      let errorMessage = `Kunne ikke slette booking: ${err instanceof Error ? err.message : "Prøv igjen."}`;
+      let errorMessage = `Kunne ikke slette booking: ${
+        err instanceof Error ? err.message : "Prøv igjen."
+      }`;
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -72,23 +74,42 @@ const MinSide = () => {
     }
     try {
       setLoading(true);
-      console.log("Updating booking with ID:", editingBooking._id, "Data:", updatedData);
-      const updatedBooking = await updateBooking(editingBooking._id, updatedData);
+      console.log(
+        "Updating booking with ID:",
+        editingBooking._id,
+        "Data:",
+        updatedData
+      );
+      const updatedBooking = await updateBooking(
+        editingBooking._id,
+        updatedData
+      );
       const refreshedBookings = await getBookings(user);
       setBookings(refreshedBookings);
       setEditingBooking(null);
-      setUpdatedData({ court: "", players: 0, date: "", time: "", medPlayers: [] });
+      setUpdatedData({
+        court: "",
+        players: 0,
+        date: "",
+        time: "",
+        medPlayers: [],
+      });
       setError(null);
     } catch (err: unknown) {
       console.error("Error updating booking:", err);
-      let errorMessage = `Kunne ikke oppdatere booking: ${err instanceof Error ? err.message : "Prøv igjen."}`;
+      let errorMessage = `Kunne ikke oppdatere booking: ${
+        err instanceof Error ? err.message : "Prøv igjen."
+      }`;
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleUpdateChange = (field: keyof UpdateBooking, value: string | number | string[]) => {
+  const handleUpdateChange = (
+    field: keyof UpdateBooking,
+    value: string | number | string[]
+  ) => {
     setUpdatedData((prev) => ({
       ...prev,
       [field]: value,
@@ -118,13 +139,30 @@ const MinSide = () => {
           {bookings.map((booking) => (
             <div key={booking._id} className="booking-card">
               <div>
-                <p><strong>Bane:</strong> {booking.court}</p>
-                <p><strong>Dato:</strong> {booking.date}</p>
-                <p><strong>Tid:</strong> {booking.time}</p>
-                <p><strong>Antall spillere:</strong> {booking.players}</p>
-                <p><strong>Medspillere:</strong> {Array.isArray(booking.medPlayers) ? booking.medPlayers.join(", ") : "Ingen"}</p>
-                <p><strong>Navn:</strong> {user.name}</p>
-                <p><strong>E-post:</strong> {user.email}</p>
+                <p>
+                  <strong>Bane:</strong> {booking.court}
+                </p>
+                <p>
+                  <strong>Dato:</strong> {booking.date}
+                </p>
+                <p>
+                  <strong>Tid:</strong> {booking.time}
+                </p>
+                <p>
+                  <strong>Antall spillere:</strong> {booking.players}
+                </p>
+                <p>
+                  <strong>Medspillere:</strong>{" "}
+                  {Array.isArray(booking.medPlayers)
+                    ? booking.medPlayers.join(", ")
+                    : "Ingen"}
+                </p>
+                <p>
+                  <strong>Navn:</strong> {user.name}
+                </p>
+                <p>
+                  <strong>E-post:</strong> {user.email}
+                </p>
               </div>
               <div className="booking-actions">
                 <button onClick={() => handleEdit(booking)}>Endre</button>
@@ -157,7 +195,9 @@ const MinSide = () => {
                 <label>Antall spillere:</label>
                 <select
                   value={updatedData.players || 2}
-                  onChange={(e) => handleUpdateChange("players", Number(e.target.value))}
+                  onChange={(e) =>
+                    handleUpdateChange("players", Number(e.target.value))
+                  }
                   disabled={loading}
                 >
                   <option value={2}>2 spillere</option>
@@ -187,7 +227,15 @@ const MinSide = () => {
                 <input
                   type="text"
                   value={(updatedData.medPlayers || []).join(", ")}
-                  onChange={(e) => handleUpdateChange("medPlayers", e.target.value.split(", ").map((p) => p.trim()).filter((p) => p !== ""))}
+                  onChange={(e) =>
+                    handleUpdateChange(
+                      "medPlayers",
+                      e.target.value
+                        .split(", ")
+                        .map((p) => p.trim())
+                        .filter((p) => p !== "")
+                    )
+                  }
                   placeholder="Navn separert med komma"
                   disabled={loading}
                 />
@@ -197,7 +245,10 @@ const MinSide = () => {
               <button type="submit" disabled={loading}>
                 {loading ? "Oppdaterer..." : "Lagre endringer"}
               </button>
-              <button onClick={() => setEditingBooking(null)} disabled={loading}>
+              <button
+                onClick={() => setEditingBooking(null)}
+                disabled={loading}
+              >
                 Avbryt
               </button>
             </div>

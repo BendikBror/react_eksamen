@@ -4,7 +4,7 @@ import { useAuth } from "../auth/AuthContext";
 import type { Booking, NewBooking } from "../types/types";
 import "./css/booking.css";
 
-const booking = () => {
+const Booking = () => {
   const { user } = useAuth();
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
   const [court, setCourt] = useState<string>("");
@@ -19,14 +19,14 @@ const booking = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const data = await getBookings(user || null);
+        const data = await getBookings(null);
         setBookings(data);
       } catch (err) {
-        setError("Kunne ikke hente bookinger.");
+        setError("Kunne ikke hente bookinger for validering.");
       }
     };
     fetchBookings();
-  }, [user, selectedDate]);
+  }, [selectedDate]); 
 
   const times = Array.from({ length: 12 }, (_, i) => {
     const hour = 9 + i;
@@ -52,14 +52,6 @@ const booking = () => {
       return;
     }
 
-    const isBooked = bookings.some(
-      (b) => b.court === court && b.date === selectedDate && b.time === time
-    );
-    if (isBooked) {
-      setError("Denne tiden er allerede booket for valgt bane.");
-      return;
-    }
-
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -74,6 +66,19 @@ const booking = () => {
     };
 
     try {
+      const allBookings = await getBookings(null);
+      const collision = allBookings.find((booking) => {
+        return (
+          booking.court === bookingData.court &&
+          booking.date === bookingData.date &&
+          booking.time === bookingData.time
+        );
+      });
+
+      if (collision) {
+        throw new Error("Denne tiden og banen er allerede booket. Velg en annen tid eller bane.");
+      }
+
       const newBooking = await createBooking(bookingData);
       setBookings((prev) => [...prev, newBooking]);
       setSuccess("Booking opprettet!");
@@ -81,7 +86,8 @@ const booking = () => {
       setTime(null);
       setMedPlayers([""]);
     } catch (err) {
-      setError("Kunne ikke opprette booking. Prøv igjen.");
+      console.error("Error creating booking:", err);
+      setError(err instanceof Error ? err.message : "Kunne ikke opprette booking. Prøv igjen.");
     } finally {
       setLoading(false);
     }
@@ -114,7 +120,6 @@ const booking = () => {
 
       <div className="filters">
         <select value={court} onChange={(e) => setCourt(e.target.value)} disabled={loading}>
-          <option value="">Velg bane</option>
           <option value="Bane 1">Bane 1</option>
           <option value="Bane 2">Bane 2</option>
           <option value="Bane 3">Bane 3</option>
@@ -162,4 +167,4 @@ const booking = () => {
   );
 };
 
-export default booking;
+export default Booking;
